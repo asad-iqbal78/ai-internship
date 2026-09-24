@@ -1,6 +1,8 @@
 fastapi
-uvicorn
+uvicorn[standard]
 python-multipart
 ultralytics
 huggingface_hub
 easyocr
+opencv-python-headless
+numpy
