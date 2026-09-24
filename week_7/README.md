@@ -152,3 +152,44 @@ The API returned HTTP status:
 ```text
 200 OK
 ```
+## cURL Testing
+
+The API can also be tested directly using cURL.
+
+### Valid Image Request
+
+```bash
+curl -X POST "http://127.0.0.1:8000/predict" -F "file=@car1.jfif"
+```
+
+Example response:
+
+```json
+{
+    "filename": "car1.jfif",
+    "detections": [
+        {
+            "plate_text": "LEF 3503",
+            "bounding_box": {
+                "x1": 325,
+                "y1": 157,
+                "x2": 417,
+                "y2": 214
+            }
+        }
+    ]
+}
+```
+
+### Invalid File Request
+
+If an unsupported file type is uploaded, the API returns a clean error:
+
+```json
+{
+    "detail": "Invalid file type. Please upload JPG, JPEG, PNG, WEBP, or JFIF image."
+}
+```
+
+The API returns HTTP `400 Bad Request` for invalid file types.
+

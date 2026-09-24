@@ -1,86 +1,159 @@
-from fastapi import FastAPI, UploadFile, File
+from fastapi import FastAPI, UploadFile, File, HTTPException
 from ultralytics import YOLO
 import easyocr
 import cv2
 import numpy as np
 import os
 
-app = FastAPI()
+app = FastAPI(
+    title="Week 7 ANPR API",
+    description="License plate detection and OCR API",
+    version="1.0.0"
+)
 
-model = YOLO("models/best.pt")
+try:
+    model = YOLO("models/best.pt")
+except Exception as e:
+    model = None
+    print(f"Model loading error: {e}")
 
-reader = easyocr.Reader(['en'], gpu=False)
+try:
+    reader = easyocr.Reader(["en"], gpu=False)
+except Exception as e:
+    reader = None
+    print(f"OCR loading error: {e}")
 
-os.makedirs("uploads", exist_ok=True)
+ALLOWED_TYPES = {
+    "image/jpeg",
+    "image/jpg",
+    "image/png",
+    "image/webp",
+    "image/jfif"
+}
 
 
 @app.get("/")
 def home():
     return {
         "message": "Week 7 ANPR API is running",
-        "model": "YOLO + EasyOCR loaded successfully"
+        "model": "YOLO + EasyOCR"
     }
 
 
 @app.post("/predict")
 async def predict(file: UploadFile = File(...)):
 
-    print("1. Image received")
+    if not file.filename:
+        raise HTTPException(
+            status_code=400,
+            detail="No file was provided."
+        )
 
-    # Read uploaded image
-    image_bytes = await file.read()
-    print("2. Image bytes read")
+    if file.content_type not in ALLOWED_TYPES:
+        raise HTTPException(
+            status_code=400,
+            detail="Invalid file type. Please upload JPG, JPEG, PNG, WEBP, or JFIF image."
+        )
 
-    # Convert image to OpenCV image
-    image_array = np.frombuffer(image_bytes, np.uint8)
-    image = cv2.imdecode(image_array, cv2.IMREAD_COLOR)
-    print("3. Image converted")
+    try:
+        print("1. Image received")
 
-    # Run YOLO
-    print("4. YOLO started")
-    results = model(image)
-    print("5. YOLO finished")
+        image_bytes = await file.read()
 
-    detections = []
+        if not image_bytes:
+            raise HTTPException(
+                status_code=400,
+                detail="Uploaded file is empty."
+            )
 
-    for result in results:
+        print("2. Image bytes read")
 
-        for box in result.boxes:
+        image_array = np.frombuffer(image_bytes, np.uint8)
+        image = cv2.imdecode(image_array, cv2.IMREAD_COLOR)
 
-            print("6. License plate detected")
+        if image is None:
+            raise HTTPException(
+                status_code=400,
+                detail="The uploaded file is not a valid image."
+            )
 
-            x1, y1, x2, y2 = map(int, box.xyxy[0])
+        print("3. Image converted")
 
-            # Crop plate
-            plate_crop = image[y1:y2, x1:x2]
+        if model is None:
+            raise HTTPException(
+                status_code=503,
+                detail="License plate detection model is not available."
+            )
 
-            print("7. Plate cropped")
+        if reader is None:
+            raise HTTPException(
+                status_code=503,
+                detail="OCR service is not available."
+            )
 
-            # OCR
-            print("8. EasyOCR started")
-            ocr_results = reader.readtext(plate_crop)
-            print("9. EasyOCR finished")
+        print("4. YOLO started")
+        results = model(image)
+        print("5. YOLO finished")
 
-            plate_text = ""
+        detections = []
 
-            if ocr_results:
-                plate_text = " ".join(
-                    [text for (_, text, _) in ocr_results]
-                )
+        for result in results:
 
-            detections.append({
-                "plate_text": plate_text,
-                "bounding_box": {
-                    "x1": x1,
-                    "y1": y1,
-                    "x2": x2,
-                    "y2": y2
-                }
-            })
+            for box in result.boxes:
 
-    print("10. Sending response")
+                print("6. License plate detected")
 
-    return {
-        "filename": file.filename,
-        "detections": detections
-    }
+                x1, y1, x2, y2 = map(int, box.xyxy[0])
+
+                height, width = image.shape[:2]
+
+                x1 = max(0, min(x1, width))
+                x2 = max(0, min(x2, width))
+                y1 = max(0, min(y1, height))
+                y2 = max(0, min(y2, height))
+
+                plate_crop = image[y1:y2, x1:x2]
+
+                if plate_crop.size == 0:
+                    continue
+
+                print("7. Plate cropped")
+
+                print("8. EasyOCR started")
+                ocr_results = reader.readtext(plate_crop)
+                print("9. EasyOCR finished")
+
+                plate_text = ""
+
+                if ocr_results:
+                    plate_text = " ".join(
+                        text for (_, text, _) in ocr_results
+                    )
+
+                detections.append({
+                    "plate_text": plate_text,
+                    "bounding_box": {
+                        "x1": x1,
+                        "y1": y1,
+                        "x2": x2,
+                        "y2": y2
+                    }
+                })
+
+        print("10. Sending response")
+
+        return {
+            "filename": file.filename,
+            "detections": detections
+        }
+
+    except HTTPException:
+        raise
+
+    except Exception as e:
+        print(f"Prediction error: {e}")
+
+        raise HTTPException(
+            status_code=500,
+            detail="Prediction failed. Please check the uploaded image and try again."
+        )
