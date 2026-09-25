@@ -1,28 +1,34 @@
-# Week 7 - ANPR API
+# Week 7 - ANPR (Automatic Number Plate Recognition)
 
 ## Project Overview
 
-This project implements an Automatic Number Plate Recognition (ANPR) API using FastAPI, YOLO, and EasyOCR.
+This project implements an **Automatic Number Plate Recognition (ANPR)** system using **YOLO and EasyOCR**.
 
 The system takes a vehicle image as input, detects the license plate using YOLO, crops the detected plate, and reads the plate number using EasyOCR.
+
+The project was initially developed as a **FastAPI API** and is now also deployed as a **Gradio application on Hugging Face Spaces**.
 
 ## Technologies Used
 
 * Python
 * FastAPI
 * Uvicorn
+* Gradio
 * YOLO
 * Ultralytics
 * EasyOCR
 * OpenCV
+* NumPy
 * PyTorch
+* Hugging Face Spaces
 
 ## Project Structure
 
 ```text
 week_7/
-│
+
 ├── main.py
+├── app.py
 ├── download_model.py
 ├── requirements.txt
 ├── README.md
@@ -33,7 +39,7 @@ week_7/
 └── uploads/
 ```
 
-## Setup
+## Local Setup
 
 Create and activate a virtual environment:
 
@@ -48,9 +54,11 @@ Install the required packages:
 pip install -r requirements.txt
 ```
 
-## Run the API
+## Local FastAPI API
 
-Start the FastAPI server:
+The original project includes a FastAPI backend.
+
+Start the API using:
 
 ```powershell
 uvicorn main:app --reload
@@ -68,7 +76,7 @@ Swagger API documentation:
 http://127.0.0.1:8000/docs
 ```
 
-## API Endpoint
+## FastAPI Endpoint
 
 ### POST `/predict`
 
@@ -100,7 +108,7 @@ Field:
 file = vehicle image
 ```
 
-## Example Response
+## Example FastAPI Response
 
 ```json
 {
@@ -119,7 +127,40 @@ file = vehicle image
 }
 ```
 
+## Hugging Face Deployment
+
+The ANPR application has also been deployed on Hugging Face Spaces using:
+
+* Gradio
+* ZeroGPU
+* YOLO
+* EasyOCR
+
+Live Space:
+
+[ANPR API — Hugging Face Space](https://huggingface.co/spaces/asadIqbal123/anpr-api?utm_source=chatgpt.com)
+
+The deployed application allows users to upload a vehicle image and receive the detected license plate number.
+
 ## ANPR Pipeline
+
+```text
+Vehicle Image
+      ↓
+Gradio Interface
+      ↓
+YOLO License Plate Detection
+      ↓
+License Plate Crop
+      ↓
+EasyOCR
+      ↓
+Plate Number
+      ↓
+JSON Result
+```
+
+For the original local API:
 
 ```text
 Vehicle Image
@@ -139,22 +180,33 @@ JSON Response
 
 ## Testing
 
-The API was tested using a vehicle image named `car1.jfif`.
+The system was tested using a vehicle image containing a license plate.
 
-Detected license plate:
-
-```text
-LEF 3503
-```
-
-The API returned HTTP status:
+Example detected plate:
 
 ```text
-200 OK
+3503 LEF
 ```
-## cURL Testing
 
-The API can also be tested directly using cURL.
+The deployed Hugging Face application successfully detected the license plate and returned its bounding box.
+
+Example result:
+
+```json
+[
+    {
+        "plate_text": "3503 LEF",
+        "bounding_box": {
+            "x1": 327,
+            "y1": 157,
+            "x2": 417,
+            "y2": 213
+        }
+    }
+]
+```
+
+## cURL Testing - Local FastAPI
 
 ### Valid Image Request
 
@@ -183,7 +235,7 @@ Example response:
 
 ### Invalid File Request
 
-If an unsupported file type is uploaded, the API returns a clean error:
+If an unsupported file type is uploaded, the API returns:
 
 ```json
 {
@@ -191,5 +243,26 @@ If an unsupported file type is uploaded, the API returns a clean error:
 }
 ```
 
-The API returns HTTP `400 Bad Request` for invalid file types.
+HTTP status:
 
+```text
+400 Bad Request
+```
+
+## Key Features
+
+* License plate detection using YOLO
+* License plate text recognition using EasyOCR
+* Bounding box detection
+* Image upload support
+* FastAPI REST API
+* Swagger API documentation
+* Gradio web interface
+* Hugging Face deployment
+* GPU acceleration through ZeroGPU
+
+## Conclusion
+
+The Week 7 ANPR project demonstrates an end-to-end license plate recognition pipeline using modern computer vision and OCR technologies.
+
+The system can detect vehicle license plates, extract the plate region, recognize the plate text, and return the detection results.
