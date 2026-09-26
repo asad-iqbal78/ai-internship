@@ -407,15 +407,15 @@ https://asadIqbal123-anpr-api.hf.space/docs
 
 ## 1. Application Home Screen
 
-![ANPR Vision Home Screen](screenshots/home.png)
+![ANPR Vision Home Screen](week_8/screenshots/home.png)
 
 ## 2. Image Upload / Processing
 
-![Image Upload and Processing](screenshots/upload.png)
+![Image Upload and Processing](week_8/screenshots/upload.png)
 
 ## 3. License Plate Detection Result
 
-![License Plate Detection Result](screenshots/result.png)
+![License Plate Detection Result](week_8/screenshots/result.png)
 
 ---
 
