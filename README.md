@@ -179,6 +179,35 @@ Week 6 focused on computer vision and the main AI pipeline used in the final ANP
 ## ANPR Pipeline
 
 The project combines two main computer vision tasks:
+# 🚗 ANPR Vision – AI License Plate Recognition
+
+A full-stack AI web application that detects vehicle license plates from uploaded images and reads the plate number using YOLO and EasyOCR.
+
+This project was developed as the **Week 8 final project of the AI Internship**.
+
+---
+
+## 🚀 Live Demo
+
+### Frontend
+
+https://anpr-vision-ai.vercel.app/
+
+The application allows users to upload a vehicle image and receive the detected license plate number.
+
+### Backend API
+
+https://asadIqbal123-anpr-api.hf.space
+
+### Interactive API Documentation
+
+https://asadIqbal123-anpr-api.hf.space/docs
+
+---
+
+## 🧠 How It Works
+
+The ANPR system uses two main AI steps:
 
 ```text
 Vehicle Image
@@ -194,36 +223,45 @@ EasyOCR
 Recognize Plate Characters
       ↓
 License Plate Text
-Deliverable
+```
 
-A computer vision notebook capable of detecting a license plate and reading text from the detected region.
+---
 
-⚙️ Week 7 – ANPR API with FastAPI
+## ⚙️ Week 7 – ANPR API with FastAPI
 
 In Week 7, the ANPR model was converted into a backend API using FastAPI.
 
-Features
-Image upload
-File validation
-License plate detection
-License plate cropping
-OCR processing
-JSON response
-Bounding box coordinates
-Error handling
-Postman testing
-Backend API
+### Features
+
+* Image upload
+* File validation
+* License plate detection
+* License plate cropping
+* OCR processing
+* JSON response
+* Bounding box coordinates
+* Error handling
+* Postman testing
+
+### Backend API
 
 The backend is deployed on Hugging Face Spaces.
 
-API:
+```text
 https://asadIqbal123-anpr-api.hf.space
+```
 
-API Endpoints
+### API Endpoints
+
+```text
 GET  /health
 GET  /docs
 POST /predict
-Example Response
+```
+
+### Example Response
+
+```json
 [
   {
     "plate_text": "3503 LEF",
@@ -235,13 +273,467 @@ Example Response
     }
   }
 ]
-Deliverable
+```
+
+### Deliverable
 
 A working FastAPI service that accepts a vehicle image and returns license plate detection and OCR results.
 
-🌐 Week 8 – Full-Stack AI Application
+---
+
+# 🌐 Week 8 – Full-Stack AI Application
 
 Week 8 was the final stage of the internship.
 
 The goal was to build a complete web application around the Week 7 AI API.
+
+## 🚗 Final Project – ANPR Vision
+
+**ANPR Vision** is a full-stack AI web application that detects vehicle license plates from uploaded images and reads the plate number using YOLO and EasyOCR.
+
+The application connects a React frontend with the FastAPI AI backend.
+
+---
+
+## 🔄 How ANPR Vision Works
+
+```text
+User
+ ↓
+Upload Vehicle Image
+ ↓
+React Frontend
+ ↓
+POST /predict
+ ↓
+FastAPI Backend
+ ↓
+YOLO License Plate Detection
+ ↓
+Crop Detected License Plate
+ ↓
+EasyOCR Text Recognition
+ ↓
+JSON Response
+ ↓
+React Frontend
+ ↓
+Display License Plate Result
+```
+
+---
+
+## ✨ Final Project Features
+
+* Upload vehicle images
+* Detect license plates using YOLO
+* Recognize license plate text using EasyOCR
+* Display detected plate number
+* Display bounding box coordinates
+* Loading state while processing
+* Error handling for failed requests
+* Responsive web interface
+* FastAPI backend integration
+* Live frontend deployment
+* Live backend deployment
+
+---
+
+# 🛠️ Technologies Used
+
+## Frontend
+
+* React
+* Vite
+* JavaScript
+* HTML
+* CSS
+
+## Backend
+
+* FastAPI
+* Python
+* REST API
+
+## Artificial Intelligence
+
+* YOLO
+* Ultralytics
+* EasyOCR
+* OpenCV
+* NumPy
+* PyTorch
+
+## Machine Learning
+
+* Scikit-learn
+* Pandas
+* Matplotlib
+
+## Development Tools
+
+* Google Colab
+* Git
+* GitHub
+* Postman
+* Visual Studio Code
+
+## Deployment
+
+* Vercel
+* Hugging Face Spaces
+
+---
+
+# 🚀 Live Application
+
+### Frontend
+
+https://anpr-vision-ai.vercel.app/
+
+The frontend allows users to upload a vehicle image and view the license plate detection and recognition result.
+
+### Backend API
+
+https://asadIqbal123-anpr-api.hf.space
+
+### Interactive API Documentation
+
+https://asadIqbal123-anpr-api.hf.space/docs
+
+---
+
+# 📸 Screenshots
+
+## 1. Application Home Screen
+
+![ANPR Vision Home Screen](screenshots/home.png)
+
+## 2. Image Upload / Processing
+
+![Image Upload and Processing](screenshots/upload.png)
+
+## 3. License Plate Detection Result
+
+![License Plate Detection Result](screenshots/result.png)
+
+---
+
+# 🔌 API Integration
+
+The React frontend communicates with the FastAPI backend using the `VITE_API_URL` environment variable.
+
+```text
+React Frontend
+      ↓
+VITE_API_URL
+      ↓
+FastAPI Backend
+      ↓
+/predict
+      ↓
+YOLO + EasyOCR
+      ↓
+Detection Result
+      ↓
+React UI
+```
+
+The backend processes the uploaded image and returns the detected license plate information as JSON.
+
+---
+
+# ⚙️ Run Locally
+
+## 1. Clone the Repository
+
+```bash
+git clone https://github.com/asad-iqbal78/ai-internship.git
+```
+
+## 2. Open Week 8
+
+```bash
+cd ai-internship/week_8
+```
+
+## 3. Install Dependencies
+
+```bash
+npm install
+```
+
+## 4. Configure API URL
+
+Create a `.env` file inside the `week_8` folder:
+
+```env
+VITE_API_URL=https://asadIqbal123-anpr-api.hf.space
+```
+
+## 5. Start Development Server
+
+```bash
+npm run dev
+```
+
+The application will be available at the local Vite URL shown in the terminal.
+
+---
+
+# 📁 Week 8 Project Structure
+
+```text
+week_8/
+│
+├── public/
+│
+├── src/
+│   ├── assets/
+│   ├── App.css
+│   ├── App.jsx
+│   ├── index.css
+│   └── main.jsx
+│
+├── screenshots/
+│   ├── home.png
+│   ├── upload.png
+│   └── result.png
+│
+├── .env
+├── .gitignore
+├── index.html
+├── package.json
+├── package-lock.json
+├── vite.config.js
+└── README.md
+```
+
+---
+
+# 🎯 Week 8 Internship Objectives
+
+The Week 8 implementation covered:
+
+* React frontend development
+* Integration with the Week 7 AI API
+* Image upload
+* API communication
+* AI prediction result display
+* Loading states
+* Error handling
+* Responsive UI
+* Frontend deployment
+* Backend integration
+* End-to-end testing
+* GitHub documentation
+
+---
+
+# 📚 8-Week Internship Learning Outcomes
+
+During the complete 8-week internship, I gained practical experience in:
+
+* Python programming
+* NumPy
+* Pandas
+* Data cleaning
+* Exploratory Data Analysis
+* Data visualization
+* Machine learning
+* Model evaluation
+* Scikit-learn
+* Neural networks
+* PyTorch
+* Computer vision
+* Object detection
+* YOLO
+* OCR
+* EasyOCR
+* OpenCV
+* FastAPI
+* REST API development
+* React
+* API integration
+* Git and GitHub
+* Postman
+* Cloud deployment
+* Full-stack AI development
+
+---
+
+# 🔄 Complete AI Development Pipeline
+
+The internship covered the complete process of taking an AI idea from development to deployment:
+
+```text
+Python
+   ↓
+Data
+   ↓
+Data Exploration
+   ↓
+Machine Learning
+   ↓
+Model Evaluation
+   ↓
+Deep Learning
+   ↓
+Computer Vision
+   ↓
+Object Detection
+   ↓
+OCR
+   ↓
+FastAPI
+   ↓
+React
+   ↓
+API Integration
+   ↓
+Deployment
+   ↓
+Full-Stack AI Application
+```
+
+---
+
+# 📌 Internship Objectives Completed
+
+The internship roadmap objectives were:
+
+* Learn Python for AI and data work
+* Work with real datasets
+* Perform exploratory data analysis
+* Train machine learning models
+* Evaluate and compare models
+* Build a neural network using PyTorch
+* Implement object detection
+* Implement OCR
+* Build an ANPR pipeline
+* Serve the AI model through an API
+* Build a React frontend
+* Integrate frontend with AI backend
+* Deploy the complete application
+* Document the work on GitHub
+
+---
+
+# 🔮 Future Improvements
+
+Possible future improvements for ANPR Vision include:
+
+* Training on larger real-world ANPR datasets
+* Improving license plate detection accuracy
+* Better OCR preprocessing
+* Multiple vehicle detection
+* Confidence score display
+* Detection history
+* Database integration
+* User authentication
+* Analytics dashboard
+* Prediction history
+* Experiment tracking
+* Improved UI/UX
+
+---
+
+# 📊 Final Project Status
+
+## ✅ Completed – 8-Week AI Internship
+
+The complete 8-week internship roadmap has been completed.
+
+The final project demonstrates the integration of:
+
+```text
+React
+  +
+FastAPI
+  +
+YOLO
+  +
+EasyOCR
+  +
+OpenCV
+  +
+PyTorch
+  =
+Full-Stack ANPR AI Application
+```
+
+The final application is deployed and accessible through the live frontend.
+
+---
+
+# 🌍 Deployment
+
+## Frontend
+
+**Platform:** Vercel
+
+https://anpr-vision-ai.vercel.app/
+
+## Backend
+
+**Platform:** Hugging Face Spaces
+
+https://asadIqbal123-anpr-api.hf.space
+
+---
+
+# 👨‍💻 Author
+
+## Asad Iqbal
+
+**BS Software Engineering**
+
+**PMAS Arid Agriculture University, Rawalpindi**
+
+### Development Background
+
+* Full-Stack Web Development
+* React
+* JavaScript
+* Node.js
+* Express.js
+* MongoDB
+* MySQL
+* Git & GitHub
+
+### AI Skills Developed
+
+* Python
+* NumPy
+* Pandas
+* Scikit-learn
+* PyTorch
+* YOLO
+* EasyOCR
+* OpenCV
+* FastAPI
+
+---
+
+# 🏁 Conclusion
+
+This repository represents my complete 8-week AI internship journey.
+
+The internship started with Python and data fundamentals and progressed through machine learning, deep learning, computer vision, object detection, OCR, API development, and frontend integration.
+
+The final outcome is **ANPR Vision**, a deployed full-stack AI application that combines a React frontend with a FastAPI backend, YOLO license plate detection, and EasyOCR text recognition.
+
+The project demonstrates how an AI model can be developed, served through an API, integrated into a web application, and deployed for practical use.
+
+---
+
+## 🚀 Project Status
+
+**Completed ✅**
+
+**Week 8 Final AI Internship Project**
+
+**Built with React + FastAPI + YOLO + EasyOCR**
+
+plete web application around the Week 7 AI API.
 
