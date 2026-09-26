@@ -85,16 +85,15 @@ Result displayed in React
 
 ### 1. Application Home Screen
 
-*Add screenshot here.*
+![ANPR Vision Home Screen](screenshots/home.png)
 
 ### 2. Image Upload / Processing
 
-*Add screenshot here.*
+![Image Upload and Processing](screenshots/upload.png)
 
 ### 3. License Plate Detection Result
 
-*Add screenshot here.*
-
+![License Plate Detection Result](screenshots/result.png)
 ## ⚙️ Run Locally
 
 ### 1. Clone the repository
